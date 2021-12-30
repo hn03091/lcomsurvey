@@ -74,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          .invalidSessionUrl("/login")
          .and()
 //      csrf      
-      .csrf();       
+      .csrf().disable();       
    }
    @Bean
    public PersistentTokenRepository persistentTokenRepository() {

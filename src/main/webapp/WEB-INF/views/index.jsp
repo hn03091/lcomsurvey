@@ -22,7 +22,7 @@
 			<a href="/beforeSignUp">회원가입</a>
 		</sec:authorize>
 		<sec:authorize access="isAuthenticated()">
-			<a href="/boardwrite">게시물 작성</a>
+			<a href="/surveywrite">게시물 작성</a>
 			<a href="/logout">로그아웃</a>
 			<sec:authentication property="principal" var="principal" />
 			<h2>${principal }</h2>
