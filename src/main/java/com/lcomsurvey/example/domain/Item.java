@@ -6,7 +6,8 @@ public class Item {
 	private int q_idx;
 	private int s_idx;
 	private int i_idx;
-	private String value;
+	private String i_content;
+	
 
 	public int getQ_idx() {
 		return q_idx;
@@ -26,12 +27,14 @@ public class Item {
 	public void setI_idx(int i_idx) {
 		this.i_idx = i_idx;
 	}
-	public String getValue() {
-		return value;
+	public String getI_content() {
+		return i_content;
 	}
-	public void setValue(String value) {
-		this.value = value;
+	public void setI_content(String i_content) {
+		this.i_content = i_content;
 	}
+	
+	
 
 	
 }

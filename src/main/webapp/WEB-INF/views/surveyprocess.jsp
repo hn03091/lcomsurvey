@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<a href="/">게시물 작성</a>
 </body>
 </html>

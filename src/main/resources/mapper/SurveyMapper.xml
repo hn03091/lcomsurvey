@@ -3,13 +3,66 @@
 <mapper namespace="com.lcomsurvey.example.mapper.SurveyMapper">
 
 	<insert id="surveyWrite" parameterType="Survey">
-	INSERT into Survey(s_idx, s_title, s_content)
-	VALUES(
-		    #{s_idx},
-		    #{s_title},
-		    #{s_content}
+		INSERT into survey(s_idx, s_title, s_content)
 		
+		VALUES(
+			#{s_idx},
+			#{s_title},
+			#{s_content}
+
 		)
-	
+		<selectKey keyProperty="s_idx" resultType="Integer">
+    		SELECT LAST_INSERT_ID()
+  		</selectKey>
+
 	</insert>
+
+	<insert id="questionWrite" parameterType="Survey">
+		INSERT into question(s_idx, q_idx, q_title, q_type, q_content)
+		
+		VALUES
+		<foreach item="q" index="index" collection="questions" separator=",">
+		(
+			#{s_idx},
+			#{q.q_idx},
+			#{q.q_title},
+			#{q.q_type},
+			#{q.q_content}
+		)
+		</foreach>
+		 <selectKey keyProperty="q_idx" resultType="Integer">
+    		SELECT LAST_INSERT_ID()
+  		</selectKey>
+	</insert>
+
+
+	<insert id="items" parameterType="Question">
+		INSERT INTO item(s_idx, q_idx, i_idx, i_content)
+		
+		VALUES
+		<foreach item="i" index="index" collection="items" separator=",">
+		(
+			#{s_idx},
+			#{q_idx},
+			#{i.i_idx},
+			#{i.i_content}
+		)
+		</foreach>			
+	</insert>
+	
+<!-- 	<insert id="items" parameterType="Survey">
+		INSERT INTO item(s_idx, q_idx, i_idx, i_content)
+		VALUES
+		<foreach item="q" index="index" collection="questions" separator=",">
+			<foreach item="i" index="index" collection="items" separator=",">
+			(
+				#{s_idx},
+				#{q_idx},
+				#{i.i_idx},
+				#{i.i_content}
+			)
+			</foreach>
+		</foreach>
+	</insert>
+	 -->
 </mapper>

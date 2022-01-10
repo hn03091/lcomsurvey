@@ -5,10 +5,17 @@ import java.util.List;
 public class Question {
 	private int q_idx;
 	private int s_idx;
+	private String q_content;
 	private String q_title;
 	private String q_type;
 	private List<Item> items;
 	
+	public String getQ_content() {
+		return q_content;
+	}
+	public void setQ_content(String q_content) {
+		this.q_content = q_content;
+	}
 	public List<Item> getItems() {
 		return items;
 	}
