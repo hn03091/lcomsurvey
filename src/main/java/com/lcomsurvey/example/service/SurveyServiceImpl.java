@@ -1,5 +1,7 @@
 package com.lcomsurvey.example.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,12 @@ public class SurveyServiceImpl implements SurveyService {
 	}
 	public void items(Question question) {
 		surveymapper.items(question);
+	}
+	public List<Survey> selectSurvey(Survey survey){
+		return surveymapper.selectSurvey(survey);
+	}
+	public Survey detailSurvey(Survey survey) {
+		return surveymapper.detailSurvey(survey);
 	}
 
 }

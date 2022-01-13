@@ -24,15 +24,12 @@
 		<foreach item="q" index="index" collection="questions" separator=",">
 		(
 			#{s_idx},
-			#{q.q_idx},
+			#{index}+1,
 			#{q.q_title},
 			#{q.q_type},
 			#{q.q_content}
 		)
 		</foreach>
-		 <selectKey keyProperty="q_idx" resultType="Integer">
-    		SELECT LAST_INSERT_ID()
-  		</selectKey>
 	</insert>
 
 
@@ -44,25 +41,53 @@
 		(
 			#{s_idx},
 			#{q_idx},
-			#{i.i_idx},
+			#{index}+1,
 			#{i.i_content}
 		)
 		</foreach>			
 	</insert>
 	
-<!-- 	<insert id="items" parameterType="Survey">
-		INSERT INTO item(s_idx, q_idx, i_idx, i_content)
-		VALUES
-		<foreach item="q" index="index" collection="questions" separator=",">
-			<foreach item="i" index="index" collection="items" separator=",">
-			(
-				#{s_idx},
-				#{q_idx},
-				#{i.i_idx},
-				#{i.i_content}
-			)
-			</foreach>
-		</foreach>
-	</insert>
-	 -->
+	<select id="selectSurvey" resultType="Survey">
+		
+		SELECT @ROWNUM := @ROWNUM +1 AS ROWNUM,
+				ta.*
+		FROM survey ta,(SELECT @ROWNUM := 0) TMP
+		
+		ORDER BY ta.s_idx ASC
+	</select>
+	
+	<resultMap id="resultSurvey" type="Survey">
+		<id property="s_idx"			column="s_idx"/>
+		<result property="s_title"		column="s_title"/>
+		<result property="s_content"		column="s_content"/>
+		
+		<collection property="questions" ofType="question">
+			<id property="q_idx"			column="q_idx"/>
+			<result property="s_idx"			column="s_idx"/>
+			<result property="q_title"		column="q_title"/>
+			<result property="q_content"	column="q_content"/>
+			<result property="q_type"		column="q_type"/>
+			
+			<collection property="items" ofType="item">
+				<id property="i_idx"			column="i_idx"/>
+				<result property="s_idx"			column="s_idx"/>
+				<result property="q_idx"		column="q_idx"/>
+				<result property="i_content"		column="i_content"/>
+	
+			</collection>
+		</collection>
+		
+	</resultMap>
+	
+	<select id="detailSurvey" resultMap="resultSurvey" >
+	
+		SELECT 		*
+		
+		FROM 		survey ta		
+		
+		LEFT JOIN 	question tb ON ta.s_idx = tb.s_idx
+		LEFT JOIN 	item tc ON tb.s_idx = tc.s_idx and tb.q_idx = tc.q_idx		
+		
+		WHERE 		ta.s_idx = #{s_idx}
+	</select>
 </mapper>

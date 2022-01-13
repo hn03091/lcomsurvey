@@ -12,13 +12,19 @@ public class Survey {
 	private String q_type;
 	private int i_idx;
 	private String i_content;
-	
+	private int ROWNUM;
 	
 	private List<Question> questions;
 	private List<Item> items;
 	
 	
 	
+	public int getROWNUM() {
+		return ROWNUM;
+	}
+	public void setROWNUM(int rOWNUM) {
+		ROWNUM = rOWNUM;
+	}
 	public String getQ_content() {
 		return q_content;
 	}

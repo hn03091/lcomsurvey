@@ -3,7 +3,21 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+<style>
+table {
+	border-collapse: collapse;
+}
 
+table tr th {
+	font-weight: 700;
+}
+
+table tr td, table tr th {
+	border: 1px solid #818181;
+	width: 200px;
+	text-align: center;
+}
+</style>
 
 <!DOCTYPE html>
 <html>
@@ -14,8 +28,16 @@
 <body>
 	<h1>Home Page</h1>
 	<hr>
-	
-	
+	<table>
+	<c:forEach var="survey" items="${list}">
+			<tr>
+				<td>${survey.ROWNUM }</td>
+				<td><a href="/detailsurvey?s_idx=${survey.s_idx}">${survey.s_title }</td>
+				<td>${survey.s_content }</td>
+
+			</tr>
+		</c:forEach>
+	</table>
 	<div>
 		<sec:authorize access="isAnonymous()">
 			<a href="/login">로그인</a>

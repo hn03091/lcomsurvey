@@ -24,9 +24,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 import com.lcomsurvey.example.domain.Item;
-import com.lcomsurvey.example.domain.test;
+
 import com.lcomsurvey.example.domain.Question;
+import com.lcomsurvey.example.domain.Serveyresult;
 import com.lcomsurvey.example.domain.Survey;
 import com.lcomsurvey.example.domain.User;
 import com.lcomsurvey.example.service.SurveyService;
@@ -42,12 +44,22 @@ public class Controller {
 	SurveyService surveyservice;
 
 	@RequestMapping("/")
-	public String home(Model model) {
+	public String home(Model model, Survey survey) {
 		logger.debug("debug");
 		logger.info("info");
 		logger.error("error");
+		
+		List<Survey> list =surveyservice.selectSurvey(survey);
+		model.addAttribute("list", list);
 
 		return "/index";
+	}
+	@RequestMapping("/detailsurvey")
+	public String detailsurvey(Model model, Survey survey) {
+		survey = surveyservice.detailSurvey(survey);
+		model.addAttribute("survey", survey);
+		
+		return "/detailsurvey";
 	}
 
 	@RequestMapping("/surveywrite")
@@ -56,41 +68,25 @@ public class Controller {
 		return "/surveywrite";
 	}
 
-/*	@RequestMapping("/surveyprocess")
-	@ResponseBody
-	public String surveyprocess(Survey survey, Model model) {
+	@RequestMapping("/resultprocess")
+	public String resultprocess(@RequestBody Serveyresult serveyresult) {
 		
-		surveyservice.surveyWrite(survey);
-		surveyservice.questionWrite(survey);
-		surveyservice.items(survey);
-		return "/surveyprocess";
+		return "/resultprocess";
 	}
-	*/
-/*	@RequestMapping(value = "/surveyprocess", method = RequestMethod.POST)
-	@ResponseBody
-	public static String readBody(HttpServletRequest request,Model model) throws IOException {
-	        BufferedReader input = new BufferedReader(new InputStreamReader(request.getInputStream()));
-	        StringBuilder builder = new StringBuilder();
-	        String buffer;
-	        while ((buffer = input.readLine()) != null) {
-	            if (builder.length() > 0) {
-	                builder.append("\n");
-	            }
-	            builder.append(buffer);
-	        }
-	        return builder.toString();
-	        
-	        
-	        
-	}
-*/
 	@RequestMapping("/surveyprocess")
-	public String surveyprocess(@RequestBody Survey survey){
-		
+	public String surveyprocess(@RequestBody Survey survey,Item item,Question question){
+		int sIdx;
+		int qIdx= 1;
 		surveyservice.surveyWrite(survey);
 		
 		surveyservice.questionWrite(survey);
+		sIdx= survey.getS_idx();
+		
 		for (Question q : survey.getQuestions()) {
+			
+			q.setQ_idx(qIdx);
+			q.setS_idx(sIdx);
+			qIdx +=1;
 			surveyservice.items(q);
 			
 		}

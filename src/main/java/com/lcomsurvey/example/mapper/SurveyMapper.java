@@ -1,5 +1,7 @@
 package com.lcomsurvey.example.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.lcomsurvey.example.domain.Item;
@@ -13,4 +15,8 @@ public interface SurveyMapper {
 	public void questionWrite(Survey survey);
 	
 	public void items(Question question);
+	
+	public List<Survey> selectSurvey(Survey survey);
+	
+	public Survey detailSurvey(Survey survey);
 }

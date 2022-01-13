@@ -40,7 +40,7 @@
 		</p>
 	</div>
 	<div>
-		<button type="button" id="btn_survey">작성완료</button>
+		<button type="button" id="btn_survey"  >작성완료</button>
 	</div>
 	<hr>
 	<br>
@@ -270,6 +270,6 @@
 
 
   </script>
-	... ... ...
+	
 </body>
 </html>
