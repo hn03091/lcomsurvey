@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.lcomsurvey.example.domain.Item;
 import com.lcomsurvey.example.domain.Question;
 import com.lcomsurvey.example.domain.Survey;
+import com.lcomsurvey.example.domain.Surveyresult;
 
 @Mapper
 public interface SurveyMapper {
@@ -19,4 +20,6 @@ public interface SurveyMapper {
 	public List<Survey> selectSurvey(Survey survey);
 	
 	public Survey detailSurvey(Survey survey);
+	
+	public void result(List<Surveyresult> surveyresult);
 }

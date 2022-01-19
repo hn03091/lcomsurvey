@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+import com.lcomsurvey.example.domain.Answer;
 import com.lcomsurvey.example.domain.Item;
 
 import com.lcomsurvey.example.domain.Question;
-import com.lcomsurvey.example.domain.Serveyresult;
+import com.lcomsurvey.example.domain.Surveyresult;
 import com.lcomsurvey.example.domain.Survey;
 import com.lcomsurvey.example.domain.User;
 import com.lcomsurvey.example.service.SurveyService;
@@ -69,7 +69,9 @@ public class Controller {
 	}
 
 	@RequestMapping("/resultprocess")
-	public String resultprocess(@RequestBody Serveyresult serveyresult) {
+	public String resultprocess(@RequestBody List<Surveyresult> surveyresults, Answer answer) {
+		
+		surveyservice.result(surveyresults);
 		
 		return "/resultprocess";
 	}

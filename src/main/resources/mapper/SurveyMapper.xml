@@ -47,6 +47,38 @@
 		</foreach>			
 	</insert>
 	
+	
+	<resultMap id="results" type="surveyresult">
+		<id property="s_idx"	column="s_idx"/>
+		<result property="q_idx" column="q_idx"/>
+		<result property="q_type" column="q_type"/>
+		<result property="sr_answer" column="sr_answer"/>
+		
+		<collection property="surveyresult" ofType="surveyresult2">
+			<id property="s_idx"	column="s_idx"/>
+			<result property="q_idx" column="q_idx"/>
+			<result property="q_type" column="q_type"/>
+			<result property="sr_answer2" column="sr_answer2"/>
+			
+		</collection>
+	</resultMap>
+	 <insert id="result" parameterType="map">
+		INSERT INTO surveyresult(s_idx, sr_idx, q_idx, q_type, sr_answer)
+		
+		VALUES
+		<foreach item="r" index="index" collection="Surveyresult" separator=",">
+		(
+			#{s_idx}, 
+			#{sr_idx},
+			#{q_idx},
+			#{q_type},
+			#{sr_answer}
+			
+		)
+		</foreach>
+	</insert>
+	
+	
 	<select id="selectSurvey" resultType="Survey">
 		
 		SELECT @ROWNUM := @ROWNUM +1 AS ROWNUM,
@@ -55,6 +87,8 @@
 		
 		ORDER BY ta.s_idx ASC
 	</select>
+	
+	
 	
 	<resultMap id="resultSurvey" type="Survey">
 		<id property="s_idx"			column="s_idx"/>
@@ -90,4 +124,6 @@
 		
 		WHERE 		ta.s_idx = #{s_idx}
 	</select>
+	
+	
 </mapper>

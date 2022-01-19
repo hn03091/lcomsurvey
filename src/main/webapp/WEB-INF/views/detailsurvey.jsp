@@ -43,6 +43,8 @@
 
 		<div class="a_div">
 		설문 ${question.q_idx}
+	
+			<input type="hidden" id="sidx" value="${survey.s_idx }">
 			<input type="hidden" id="type" value="${question.q_type}">
 			<input type="hidden" id="idx" value="${question.q_idx}">
 			<p>질문 제목: ${question.q_title }</p>
@@ -66,40 +68,56 @@
 		
 	
 	<script>
-	$(document).on('click','#btn_result',function(){		
+	$(document).on('click','#btn_result',function(){				
+		let Surveyresults =[];
 		
-		let questions =[];
 		$(".a_div").each(function (a){			
 			 // q_idx, 결과값 배열
-			let results =[];  //설문결과 answer 결과값 
-			
+			let answers =[];  //설문결과 answer 결과값 
+			let s_idx = $(this).find('#sidx').val();
 			let q_idx = $(this).find('#idx').val();
 			let q_type = $(this).find('#type').val();			
 			if(q_type < '3'){
+				
 				sr_answer = $(this).find('textarea[name="sr_answer"]').val();
-				console.log(sr_answer);
-				results.push(sr_answer);
+				//console.log(sr_answer);
+				//results.push(sr_answer);
 			}else if(q_type == '3'){
+				sr_answer = '';
 				$(this).find('input:checked').each(function(){
 					console.log($(this).val());
-					sr_answer2 = $(this).val();
-					results.push(sr_answer2);
+					let sr_answer2 = $(this).val();
+					let answer = {
+						sr_answer2 : sr_answer2
+					};
+					answers.push(answer);
 				});				
 			}
-			let question ={
-					q_idx : q_idx,
-					results : results,
+		
+			
+			
+			let result ={
+					s_idx : s_idx,
+					q_idx : q_idx,					
+					sr_answer : sr_answer,
+					answers : answers,
 					q_type : q_type
-			}
-			questions.push(question);
+				
+					
+			};
+			Surveyresults.push(result);
 		});
-	
-		console.log(questions)
+/*		let Surveyresult ={
+				Surveyresults : Surveyresults
+				
+		};*/
+		console.log(Surveyresults);
+		
 		$.ajax({
 			type: "post",
 			url:"http://localhost:8080/resultprocess",
 			contentType: "application/json",
-			data: JSON.stringify(questions)
+			data: JSON.stringify(Surveyresults)
 		})
 		.done(function (data){
 			console.log(data);

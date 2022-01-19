@@ -9,7 +9,7 @@ public class Survey {
 	private int q_idx;
 	private String q_content;
 	private String q_title;
-	private String q_type;
+	private int q_type;
 	private int i_idx;
 	private String i_content;
 	private int ROWNUM;
@@ -37,10 +37,10 @@ public class Survey {
 	public void setQ_title(String q_title) {
 		this.q_title = q_title;
 	}
-	public String getQ_type() {
+	public int getQ_type() {
 		return q_type;
 	}
-	public void setQ_type(String q_type) {
+	public void setQ_type(int q_type) {
 		this.q_type = q_type;
 	}
 	public int getI_idx() {
