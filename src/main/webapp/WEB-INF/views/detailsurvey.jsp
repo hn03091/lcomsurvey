@@ -39,6 +39,7 @@
 	<p>
 	<hr>
 <button class="button" type="button" id="btn_result"  >제출</button>
+
 	<c:forEach var="question" items="${survey.questions}">
 
 		<div class="a_div">
@@ -60,7 +61,8 @@
 			<c:if test="${question.q_type  == 3 }">
 		
 				<c:forEach var="item" items="${question.items }">
-					<input type="checkbox" name="sr_answer2" value='${item.i_content}'>${item.i_content }					
+					<input type="checkbox" name="sr_answer2" value='${item.i_idx }'>${item.i_content }
+									
 				</c:forEach>
 			</c:if>
 		</div>
@@ -69,7 +71,7 @@
 	
 	<script>
 	$(document).on('click','#btn_result',function(){				
-		let Surveyresults =[];
+		let Surveyresult =[];
 		
 		$(".a_div").each(function (a){			
 			 // q_idx, 결과값 배열
@@ -85,10 +87,10 @@
 			}else if(q_type == '3'){
 				sr_answer = '';
 				$(this).find('input:checked').each(function(){
-					console.log($(this).val());
-					let sr_answer2 = $(this).val();
+					//console.log($(this).val());
+					let i_idx = $(this).val();
 					let answer = {
-						sr_answer2 : sr_answer2
+						i_idx : i_idx
 					};
 					answers.push(answer);
 				});				
@@ -105,19 +107,19 @@
 				
 					
 			};
-			Surveyresults.push(result);
+			Surveyresult.push(result);
 		});
 /*		let Surveyresult ={
 				Surveyresults : Surveyresults
 				
 		};*/
-		console.log(Surveyresults);
+		console.log(Surveyresult);
 		
 		$.ajax({
 			type: "post",
 			url:"http://localhost:8080/resultprocess",
 			contentType: "application/json",
-			data: JSON.stringify(Surveyresults)
+			data: JSON.stringify(Surveyresult)
 		})
 		.done(function (data){
 			console.log(data);

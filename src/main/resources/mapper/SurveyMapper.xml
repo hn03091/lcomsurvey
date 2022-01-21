@@ -48,7 +48,7 @@
 	</insert>
 	
 	
-	<resultMap id="results" type="surveyresult">
+	<!-- <resultMap id="results" type="surveyresult">
 		<id property="s_idx"	column="s_idx"/>
 		<result property="q_idx" column="q_idx"/>
 		<result property="q_type" column="q_type"/>
@@ -61,20 +61,35 @@
 			<result property="sr_answer2" column="sr_answer2"/>
 			
 		</collection>
-	</resultMap>
-	 <insert id="result" parameterType="map">
-		INSERT INTO surveyresult(s_idx, sr_idx, q_idx, q_type, sr_answer)
+	</resultMap> 
+	-->
+	<insert id="result2" parameterType="java.util.List">
+		INSERT INTO surveyresult(s_idx,q_idx, i_idx)
 		
 		VALUES
-		<foreach item="r" index="index" collection="Surveyresult" separator=",">
+		<foreach item="r2" index="index" collection="list" separator=",">
 		(
-			#{s_idx}, 
-			#{sr_idx},
-			#{q_idx},
-			#{q_type},
-			#{sr_answer}
+			#{r2.s_idx}, 
+			#{r2.q_idx},
+			#{r2.i_idx}
 			
 		)
+		</foreach>
+	</insert>
+	
+	 <insert id="result" parameterType="java.util.List">
+	 
+		INSERT INTO surveyresult(s_idx, q_idx, q_type, sr_answer)
+		
+		VALUES
+		<foreach item="r" index="index" collection="list" separator=",">
+			(
+				#{r.s_idx}, 
+				#{r.q_idx},
+				#{r.q_type},
+				#{r.sr_answer}
+			
+			)
 		</foreach>
 	</insert>
 	

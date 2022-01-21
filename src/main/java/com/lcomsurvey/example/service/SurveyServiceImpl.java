@@ -36,5 +36,8 @@ public class SurveyServiceImpl implements SurveyService {
 	public void result(List<Surveyresult> surveyresult) {
 		surveymapper.result(surveyresult);
 	}
+	public void result2(List<Surveyresult> surveyresult) {
+		surveymapper.result2(surveyresult);
+	}
 
 }

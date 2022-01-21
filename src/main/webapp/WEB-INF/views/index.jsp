@@ -29,11 +29,19 @@ table tr td, table tr th {
 	<h1>Home Page</h1>
 	<hr>
 	<table>
+	<tr>
+	<td>번호</td>
+	<td>제목</td>
+	<td>내용</td>
+	<td>결과</td>
+	</tr>
+	
 	<c:forEach var="survey" items="${list}">
 			<tr>
 				<td>${survey.ROWNUM }</td>
 				<td><a href="/detailsurvey?s_idx=${survey.s_idx}">${survey.s_title }</td>
 				<td>${survey.s_content }</td>
+				<td><a href="/result?s_idx=${survey.s_idx}">결과</a></td>
 
 			</tr>
 		</c:forEach>

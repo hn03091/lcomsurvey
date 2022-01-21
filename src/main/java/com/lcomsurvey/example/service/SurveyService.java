@@ -19,4 +19,6 @@ public interface SurveyService {
 	public Survey detailSurvey(Survey survey);
 	
 	public void result(List<Surveyresult> surveyresult);
+	
+	public void result2(List<Surveyresult> surveyresult);
 }

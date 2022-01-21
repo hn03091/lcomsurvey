@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -61,6 +63,13 @@ public class Controller {
 		
 		return "/detailsurvey";
 	}
+	@RequestMapping("/result")
+	public String result(Model model, Survey survey) {
+		survey =surveyservice.detailSurvey(survey);
+		model.addAttribute("survey", survey);
+		
+		return "/result";
+	}
 
 	@RequestMapping("/surveywrite")
 	public String surveywrite(Model model) {
@@ -69,9 +78,27 @@ public class Controller {
 	}
 
 	@RequestMapping("/resultprocess")
-	public String resultprocess(@RequestBody List<Surveyresult> surveyresults, Answer answer) {
+	public String resultprocess(@RequestBody List<Surveyresult> surveyresult) {
 		
-		surveyservice.result(surveyresults);
+		/*List<Surveyresult> answer2 = new ArrayList<Surveyresult>();
+		for(Surveyresult rs : surveyresult) {
+			int qtype= rs.getQ_type();
+			if(qtype <3) {				
+		//		surveyservice.result(rs);
+			}else if(qtype ==3){
+				
+				
+			}
+		}*/
+		List<Surveyresult> s2 = surveyresult.stream().
+				filter(rs -> rs.getQ_type() == 3)
+				.collect(Collectors.toList());
+		
+		List<Surveyresult> s = surveyresult.stream().
+				filter(rs -> rs.getQ_type() < 3)
+				.collect(Collectors.toList());
+		surveyservice.result(s);
+		//surveyservice.result2(s2);
 		
 		return "/resultprocess";
 	}
