@@ -8,15 +8,39 @@ public class Surveyresult {
 	private int q_idx;
 	private int q_type;
 	private String sr_answer;
+	private int i_idx;
+	private int sr_idx;
+	private int sr2_idx;
 	
 	
-	private List<Answer>answers;
 	
-	public List<Answer> getAnswers() {
-		return answers;
+	private List<Surveyresult2> surveyresult2s;
+	
+	
+	
+	public int getSr2_idx() {
+		return sr2_idx;
 	}
-	public void setAnswers(List<Answer> answers) {
-		this.answers = answers;
+	public void setSr2_idx(int sr2_idx) {
+		this.sr2_idx = sr2_idx;
+	}
+	public int getSr_idx() {
+		return sr_idx;
+	}
+	public void setSr_idx(int sr_idx) {
+		this.sr_idx = sr_idx;
+	}
+	public int getI_idx() {
+		return i_idx;
+	}
+	public void setI_idx(int i_idx) {
+		this.i_idx = i_idx;
+	}
+	public List<Surveyresult2> getAnswers() {
+		return surveyresult2s;
+	}
+	public void setAnswers(List<Surveyresult2> answers) {
+		this.surveyresult2s = answers;
 	}
 	public String getSr_answer() {
 		return sr_answer;

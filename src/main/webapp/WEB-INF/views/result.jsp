@@ -33,25 +33,21 @@
 }
 </style>
 <body>
+
 <c:forEach var="question" items="${survey.questions}">
 
 		<div class="a_div">
 		설문 ${question.q_idx}
 	
-			<input type="hidden" id="sidx" value="${survey.s_idx }">
-			<input type="hidden" id="type" value="${question.q_type}">
-			<input type="hidden" id="idx" value="${question.q_idx}">
+			<input type="hidden" id="s_idx" value="${survey.s_idx }">
+			<input type="hidden" id="q_type" value="${question.q_type}">
+			<input type="hidden" id="q_idx" value="${question.q_idx}">
 			<p>질문 제목: ${question.q_title }</p>
 			
 			<p>질문 설명: ${question.q_content }<p>
 		
 			<hr>
 			
-			<c:if test="${question.q_type < 3}">			
-				설문 결과보기(?개) <!--  hide, show 이용 -->
-				<hr>
-				
-			</c:if>
 			
 			<c:if test="${question.q_type  == 3 }">
 		
@@ -60,9 +56,50 @@
 								
 				</c:forEach>
 				<hr>
-				설문 결과보기(?개)	
+				
 			</c:if>
+		<a href="/openresult?q_idx=${question.q_idx}&s_idx=${survey.s_idx}&q_type=${question.q_type}" target='_blank'>결과보기</a>
+			
 		</div>
 	</c:forEach>
+	
+
+	<!-- <button class="button" onclick="window.open('openresult');" type="button" id="btn_openresult"  >결과보기</button> -->
+
+	<!-- 
+	<script>
+	$(document).on('click','#btn_openresult',function(){
+		
+		let Result=[];
+		
+		$(".a_div").each(function (a){
+			let s_idx= $(this).find('#s_idx').val();
+			let q_idx =$(this).find('#q_idx').val();
+			let q_type =$(this).find('#q_type').val();
+			let getresult ={
+					s_idx : s_idx,
+					q_idx : q_idx,
+					q_type : q_type
+			}
+			Result.push(getresult);
+			
+		});
+	
+		console.log(Result);
+		
+		$.ajax({
+			type: "post",
+			url:"http://localhost:8080/openresult",
+			contentType: "application/json",
+			data: JSON.stringify(Result)
+		})
+		.done(function (data){
+			console.log(data);
+			console.log('success');
+			
+		});
+	});
+	</script>
+	 -->
 </body>
 </html>

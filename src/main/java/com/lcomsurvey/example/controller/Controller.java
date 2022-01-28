@@ -26,10 +26,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.lcomsurvey.example.domain.Answer;
+import com.lcomsurvey.example.domain.Surveyresult2;
 import com.lcomsurvey.example.domain.Item;
 
 import com.lcomsurvey.example.domain.Question;
+import com.lcomsurvey.example.domain.Result;
+
 import com.lcomsurvey.example.domain.Surveyresult;
 import com.lcomsurvey.example.domain.Survey;
 import com.lcomsurvey.example.domain.User;
@@ -64,12 +66,57 @@ public class Controller {
 		return "/detailsurvey";
 	}
 	@RequestMapping("/result")
-	public String result(Model model, Survey survey) {
-		survey =surveyservice.detailSurvey(survey);
+	public String result(Model model,Result result,Survey survey) {
+		
+		survey= surveyservice.detailSurvey(survey);
+		//List<Survey> getresult= surveyservice.getresult(survey);
+		
 		model.addAttribute("survey", survey);
+		//model.addAttribute("getresult", getresult);
 		
 		return "/result";
 	}
+	@RequestMapping("/openresult")
+	public String openresult(Model model,Survey survey,Item item,Surveyresult2 sr2) {
+		int qType=survey.getQ_type();
+		survey= surveyservice.getsurvey(survey);
+		if(qType <3) {
+			List<Survey> result = surveyservice.getresult(survey);
+			
+			model.addAttribute("result", result);
+		}else if(qType ==3) {
+			List<Survey> result =surveyservice.getresult2(survey);
+			
+			model.addAttribute("result", result);
+			
+			List<Item> getitem = surveyservice.getitem(item);
+			model.addAttribute("getitem", getitem);
+			int sIdx = survey.getS_idx();
+			sr2.setS_idx(sIdx);
+			
+			List<Surveyresult2> countItem=surveyservice.itemcount(sr2);
+			model.addAttribute("countItem", countItem);
+		}
+		model.addAttribute("survey", survey);
+		
+		
+		return "/openresult";		
+	}
+	/*@RequestMapping("/openresult")
+	public String openresult(@RequestBody List<Result> result,Model model) {
+	
+		List<Result> s2 = result.stream(). //객관식
+				filter(rs -> rs.getQ_type() == 3)
+				.collect(Collectors.toList());
+		
+		List<Result> s = result.stream().//주관식
+				filter(rs -> rs.getQ_type() < 3)
+				.collect(Collectors.toList());
+		List<Result> result1=surveyservice.getresult1(s);
+		//result= surveyservice.getresult2(s2);
+		model.addAttribute("result", result1);
+		return "/openresult";
+	}*/
 
 	@RequestMapping("/surveywrite")
 	public String surveywrite(Model model) {
@@ -80,25 +127,28 @@ public class Controller {
 	@RequestMapping("/resultprocess")
 	public String resultprocess(@RequestBody List<Surveyresult> surveyresult) {
 		
-		/*List<Surveyresult> answer2 = new ArrayList<Surveyresult>();
-		for(Surveyresult rs : surveyresult) {
-			int qtype= rs.getQ_type();
-			if(qtype <3) {				
-		//		surveyservice.result(rs);
-			}else if(qtype ==3){
-				
-				
-			}
-		}*/
-		List<Surveyresult> s2 = surveyresult.stream().
+	
+		List<Surveyresult> s2 = surveyresult.stream(). //객관식
 				filter(rs -> rs.getQ_type() == 3)
 				.collect(Collectors.toList());
 		
-		List<Surveyresult> s = surveyresult.stream().
+		
+		for( Surveyresult sr : s2 ) {	
+			List<Surveyresult2> iIdxList=sr.getAnswers();
+			for(Surveyresult2 as :iIdxList) {
+				int iIdx=as.getI_idx();
+				sr.setI_idx(iIdx);
+				surveyservice.result2(s2);
+			}
+			
+		}
+		
+		List<Surveyresult> s = surveyresult.stream().//주관식
 				filter(rs -> rs.getQ_type() < 3)
 				.collect(Collectors.toList());
+		
 		surveyservice.result(s);
-		//surveyservice.result2(s2);
+		
 		
 		return "/resultprocess";
 	}

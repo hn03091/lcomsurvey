@@ -46,32 +46,19 @@
 		)
 		</foreach>			
 	</insert>
-	
-	
-	<!-- <resultMap id="results" type="surveyresult">
-		<id property="s_idx"	column="s_idx"/>
-		<result property="q_idx" column="q_idx"/>
-		<result property="q_type" column="q_type"/>
-		<result property="sr_answer" column="sr_answer"/>
-		
-		<collection property="surveyresult" ofType="surveyresult2">
-			<id property="s_idx"	column="s_idx"/>
-			<result property="q_idx" column="q_idx"/>
-			<result property="q_type" column="q_type"/>
-			<result property="sr_answer2" column="sr_answer2"/>
-			
-		</collection>
-	</resultMap> 
-	-->
+
 	<insert id="result2" parameterType="java.util.List">
-		INSERT INTO surveyresult(s_idx,q_idx, i_idx)
+		INSERT INTO surveyresult2(sr2_idx,s_idx,q_idx, i_idx)
 		
 		VALUES
+		
 		<foreach item="r2" index="index" collection="list" separator=",">
 		(
+			#{r2.sr2_idx},
 			#{r2.s_idx}, 
-			#{r2.q_idx},
+			#{r2.q_idx},			
 			#{r2.i_idx}
+		
 			
 		)
 		</foreach>
@@ -79,11 +66,13 @@
 	
 	 <insert id="result" parameterType="java.util.List">
 	 
-		INSERT INTO surveyresult(s_idx, q_idx, q_type, sr_answer)
+		INSERT INTO surveyresult(sr_idx,s_idx, q_idx, q_type, sr_answer)
 		
 		VALUES
 		<foreach item="r" index="index" collection="list" separator=",">
 			(
+			
+				#{r.sr_idx},
 				#{r.s_idx}, 
 				#{r.q_idx},
 				#{r.q_type},
@@ -92,6 +81,7 @@
 			)
 		</foreach>
 	</insert>
+	
 	
 	
 	<select id="selectSurvey" resultType="Survey">
@@ -139,6 +129,115 @@
 		
 		WHERE 		ta.s_idx = #{s_idx}
 	</select>
+	<select id="getresult" resultType="Survey">
+		SELECT 		*
+		FROM 			question ta
+		LEFT JOIN	surveyresult tb ON ta.s_idx = tb.s_idx AND ta.q_idx = tb.q_idx
+
+		WHERE 		ta.s_idx = #{s_idx} AND ta.q_idx =#{q_idx}
+	</select>
 	
+	<select id="getresult2" resultType="Survey">
+		SELECT 		*
+		FROM 			question ta
+		LEFT JOIN	surveyresult2 tb ON ta.s_idx = tb.s_idx AND ta.q_idx = tb.q_idx
+
+		WHERE 		ta.s_idx = #{s_idx} AND ta.q_idx =#{q_idx}
+	</select>
 	
+	<select id="getitem" resultType="Item">
+		SELECT 		*
+		FROM			item
+		WHERE 		s_idx = #{s_idx} AND q_idx = #{q_idx}
+	</select>
+	
+	<select id="getsurvey" resultType="Survey">
+		SELECT 		*
+		FROM			survey ta
+		LEFT JOIN	question tb ON ta.s_idx =tb.s_idx
+		WHERE 		ta.s_idx = #{s_idx} AND tb.q_idx =#{q_idx}
+	</select>
+	
+	<select id="itemcount" resultType="Surveyresult2">
+		SELECT		q_idx, i_idx, COUNT(i_idx) cnt
+		FROM			surveyresult2
+		WHERE			1=1
+		AND			s_idx = #{s_idx}
+		GROUP BY 	q_idx, i_idx
+		ORDER BY 	q_idx, i_idx
+
+ 
+	</select>
+	
+	<!-- <select id="getresult1" resultType="Result">
+		SELECT 		*,GROUP_CONCAT(sr_answer)
+		FROM 			question ta
+		
+		LEFT JOIN	surveyresult tb ON ta.s_idx = tb.s_idx AND ta.q_idx = tb.q_idx
+		<foreach item="gr1" index="index" collection="list" separator=",">
+		WHERE 		ta.s_idx = #{gr1.s_idx} and tb.q_idx = #{gr1.q_idx}
+		</foreach>
+	</select>
+	
+	<select id="getresult2" resultType="Result">
+		SELECT 		*,GROUP_CONCAT(i_content)
+		FROM 			question ta
+		
+		LEFT JOIN	surveyresult2 tb ON ta.s_idx = tb.s_idx AND ta.q_idx = tb.q_idx
+		LEFT JOIN	item tc ON ta.s_idx = tc.s_idx AND tb.q_idx = tc.q_idx AND tb.i_idx= tc.i_idx
+		<foreach item="gr2" index="index" collection="list" separator=",">
+		WHERE 		ta.s_idx = #{gr2.s_idx} and tb.q_idx = #{gr2.q_idx}
+		</foreach>
+	</select>
+	 -->
+	<!-- 
+ 	<resultMap id="getresults" type="Result">
+		<id property="s_idx"			column="s_idx"/>
+		<result property="s_title"		column="s_title"/>
+		<result property="s_content"		column="s_content"/>
+		
+		<collection property="questions" ofType="question">
+			<id property="q_idx"			column="q_idx"/>
+			<result property="s_idx"			column="s_idx"/>
+			<result property="q_title"		column="q_title"/>
+			<result property="q_content"	column="q_content"/>
+			<result property="q_type"		column="q_type"/>
+				
+			<collection property="items" ofType="item">
+				<id property="i_idx"			column="i_idx"/>
+				<result property="s_idx"			column="s_idx"/>
+				<result property="q_idx"		column="q_idx"/>
+				<result property="i_content"		column="i_content"/>
+			</collection>
+			
+			<collection property="surveyresults" ofType="surveyresult">
+				<id property="sr_idx"	column="sr_idx"/>
+				<result property="s_idx" column="s_idx"/>
+				<result property="q_idx" column="q_idx"/>
+				<result property="q_type" column="q_type"/>
+				<result property="sr_answer" column="sr_answer"/>			
+			</collection>
+			
+			<collection property="surveyresult2s" ofType="surveyresult2">
+				<id property="sr2_idx"	column="sr2_idx"/>
+				<result property="s_idx" column="s_idx"/>
+				<result property="q_idx" column="q_idx"/>
+				<result property="i_idx" column="i_idx"/>	
+			</collection>			
+		</collection>				
+	</resultMap>
+	<select id ="getresult" resultMap="getresults">
+		SELECT 		*
+		FROM 			survey ta		
+	
+		LEFT JOIN 	question tb ON ta.s_idx = tb.s_idx		
+		LEFT JOIN	surveyresult ra ON ta.s_idx = ra.s_idx AND tb.q_idx = ra.q_idx
+		LEFT JOIN	surveyresult2 rb ON ta.s_idx = rb.s_idx AND tb.q_idx = rb.q_idx
+		
+		LEFT JOIN 	item tc ON tb.s_idx = tc.s_idx and tb.q_idx = tc.q_idx
+		WHERE 		ta.s_idx = #{s_idx}
+		
+	</select>
+	
+	  -->
 </mapper>

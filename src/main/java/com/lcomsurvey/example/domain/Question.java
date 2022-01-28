@@ -9,7 +9,24 @@ public class Question {
 	private String q_title;
 	private String q_type;
 	private List<Item> items;
+	private List<Surveyresult> surveyresults;
+	private List<Surveyresult2> surveyresult2s;
 	
+	
+	
+	
+	public List<Surveyresult2> getAnswers() {
+		return surveyresult2s;
+	}
+	public void setAnswers(List<Surveyresult2> answers) {
+		this.surveyresult2s = answers;
+	}
+	public List<Surveyresult> getSurveyresults() {
+		return surveyresults;
+	}
+	public void setSurveyresults(List<Surveyresult> surveyresults) {
+		this.surveyresults = surveyresults;
+	}
 	public String getQ_content() {
 		return q_content;
 	}
