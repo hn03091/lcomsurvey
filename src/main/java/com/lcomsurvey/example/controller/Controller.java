@@ -76,8 +76,10 @@ public class Controller {
 		
 		return "/result";
 	}
+	@ResponseBody
 	@RequestMapping("/chart")
 	public String chart(Model model) {
+		//https://shinsunyoung.tistory.com/47
 			return "/chart";
 	}
 	@RequestMapping("/openresult")

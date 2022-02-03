@@ -24,9 +24,8 @@ google.charts.load('current', {'packages':['corechart']});
       function drawChart() {
     	  
     	/*  var jsonData = $.ajax({
-    		type:"get",
+    		
       		url :"http://localhost:8080/openresult",
-      		dataType : "json",
       		async : false
       	  }).responseText;
      
@@ -40,16 +39,7 @@ google.charts.load('current', {'packages':['corechart']});
       	  	title: 'Answer Chart'
       	  });
       	*/
-      	$.ajax({
-      		type:"get",
-      		url:"http://localhost:8080/openresult",
-      		contentType:"application/json",
-      		data: JSON.stringify(chart)
-      		
-      	});
-      	console.log(chart);
- 	
- 		
+      	
  				
         var data = google.visualization.arrayToDataTable([
           ['Task', 'Hours per Day'],
