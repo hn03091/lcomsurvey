@@ -76,6 +76,10 @@ public class Controller {
 		
 		return "/result";
 	}
+	@RequestMapping("/chart")
+	public String chart(Model model) {
+			return "/chart";
+	}
 	@RequestMapping("/openresult")
 	public String openresult(Model model,Survey survey,Item item,Surveyresult2 sr2) {
 		int qType=survey.getQ_type();
@@ -96,27 +100,21 @@ public class Controller {
 			
 			List<Surveyresult2> countItem=surveyservice.itemcount(sr2);
 			model.addAttribute("countItem", countItem);
+			
+			
+			/*for(Surveyresult2 ct : countItem) {
+				
+				int iIdx =ct.getI_idx();
+				int cNt = ct.getCnt();
+				
+				
+			}*/
 		}
 		model.addAttribute("survey", survey);
 		
 		
 		return "/openresult";		
 	}
-	/*@RequestMapping("/openresult")
-	public String openresult(@RequestBody List<Result> result,Model model) {
-	
-		List<Result> s2 = result.stream(). //객관식
-				filter(rs -> rs.getQ_type() == 3)
-				.collect(Collectors.toList());
-		
-		List<Result> s = result.stream().//주관식
-				filter(rs -> rs.getQ_type() < 3)
-				.collect(Collectors.toList());
-		List<Result> result1=surveyservice.getresult1(s);
-		//result= surveyservice.getresult2(s2);
-		model.addAttribute("result", result1);
-		return "/openresult";
-	}*/
 
 	@RequestMapping("/surveywrite")
 	public String surveywrite(Model model) {

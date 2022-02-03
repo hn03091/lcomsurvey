@@ -2,33 +2,11 @@
     pageEncoding="UTF-8"%>
     <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <html>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
 
-      function drawChart() {
-
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     3],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
-        ]);
-
-        var options = {
-          title: 'My Daily Activities'
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-        chart.draw(data, options);
-      }
-    </script>
 <head>
 <meta charset="UTF-8">
 
@@ -55,13 +33,50 @@
 	</c:forEach>
 	<hr>
 	<c:forEach var="countItem" items="${countItem}">
+		<div class="a_div">
+		<input type="hidden" id="iIdx" value="${countItem.i_idx }">
+		<input type="hidden" id="iCnt" value="${countItem.cnt }">
 		<p>${countItem.i_idx}번 답안 갯수 : ${countItem.cnt }개</p>
+		</div>
 	</c:forEach>
+	<button onclick="window.open('chart','AnswerChart','width=430,height=500')" class="button" type="button" id="btn_result"  >차트로보기</button>
 	<hr>
+		
+ 
 	    <div id="piechart" style="width: 900px; height: 500px;"></div>
 		
 </c:if>
 
-
+<script>
+    $(document).on('click','#btn_result',function(){
+		let chart =[];
+		$(".a_div").each(function(a){
+			let i_idx= $(this).find('#iIdx').val();
+			let i_cnt= $(this).find('#iCnt').val();
+			let item={
+					i_idx: i_idx,
+					i_cnt: i_cnt
+			};
+			chart.push(item);
+			
+		});
+		console.log(chart);
+ 		
+		
+	    $.ajax({
+	    	type:"post",
+	    	url :"http://localhost:8080/chart",
+	    	contentType:"application/json",
+	    	data: JSON.stringify(chart)
+	    })
+	    .done(function (data){
+	    	console.log(data);
+	    	console.log('success');
+	    });
+    });	
+    
+    
+   
+    </script>
 </body>
 </html>
