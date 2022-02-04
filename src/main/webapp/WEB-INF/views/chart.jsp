@@ -22,7 +22,29 @@ google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
   	
       function drawChart() {
-    	  
+    	  var jsonData = $.ajax({
+  			
+  			url : "http://localhost:8080/openresult",
+  			
+  			dataType : "json",
+  			
+  			async : false
+  			
+  			}).responseText;
+  		alert(jsonData);
+  		//json 데이터를 데이터 테이블로 변환
+  		var data = new google.visualization.DataTable(jsonData);
+  		
+  		// 차트 그리기 (PieChart, LineChart, ColumnChart)
+  		var chart = new google.visualization.PieChart(document
+  		
+  			.getElementById('chart_div'));
+  			
+  			//draw(데이터, 옵션)
+  			chart.draw(data, {
+  				width : 400,
+  				height : 240
+  		}); 
     	/*  var jsonData = $.ajax({
     		
       		url :"http://localhost:8080/openresult",
@@ -41,13 +63,7 @@ google.charts.load('current', {'packages':['corechart']});
       	*/
       	
  				
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['1',     3],
-          ['2',      2],
-          ['3',  2],
-          ['4', 2]
-        ]);
+      
 
         var options = {
           title: 'AnswerChart'
